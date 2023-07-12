@@ -7,13 +7,34 @@
   - name: Update repository index
     apt:
       update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+  
+  - name: Update Rocky repository index
+    dnf:
+      update_cache: yes
+    when: ansible_distribution == "Rocky"
 
   - name: Install apache2 package
     apt:
       name: apache2
       state: latest
+    when: ansible_distribution == "Ubuntu"
 
   - name: Install php support package
     apt:
       name:  libapache2-mod-php
       state: latest
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Install Rocky apache2 support package
+    dnf:
+      name:  httpd
+      state: latest
+    when: ansible_distribution == "Rocky"
+
+  - name: Install php support package
+    dnf:
+      name:  php
+      state: latest
+    when: ansible_distribution == "Rocky"
+
