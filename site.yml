@@ -40,6 +40,15 @@
       state: latest
     when: ansible_distribution == "Rocky"
 
+  - name: copy default html file for site
+    tags: apache,apache2,httpd
+    copy:
+      src: default_site.html
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: 0644
+
 - hosts: db_servers
   become: true
   tasks:
@@ -68,4 +77,19 @@
       name: samba
       state: latest
 
+- hosts: workstations
+  become: true
+  tasks: 
+
+  - name: install unzip
+    package:
+    name: unzip
       
+  - name: Install Terraform
+    unarchive: 
+      src: https://releases.hashicorp.com/terraform/1.5.3/terraform_1.5.3_linux_amd64.zip
+      dest: /usr/local/bin
+      owner: gbalusek
+      group: gbalusek
+      mode: 0755
+
