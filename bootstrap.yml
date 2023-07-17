@@ -1,0 +1,45 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+ 
+  - name: install updates for Ubuntu servers
+    tags: always  
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+  - name: install updates for Rocky servers
+    tags: always  
+    dnf:
+      update_only: yes
+      update_cache: yes
+    when: ansible_distribution == "Rocky"
+
+
+- hosts: all
+  become: true
+  tasks:
+    
+  - name: create a new user
+    tags: always
+    user:
+      name: simone
+      groups: root
+
+  - name: add ssh key for new user
+    tags: always
+    authorized_key:
+      user: simone
+      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGrbYppJ9pW6hYN6w9fJ4bC+0A5im66k00a4cth53BqB ansible"
+
+  - name: add sudoer file for user
+    tags: always
+    copy: 
+      src: sudoer_simone
+      dest: /etc/sudoers.d/simone
+      owner: root
+      group: root
+      mode: 0440 

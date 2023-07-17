@@ -4,20 +4,32 @@
   become: true
   pre_tasks:
  
-  - name: install updates for Ubuntu servers
+  - name: updates repo cache Ubuntu
     tags: always  
     apt:
-      upgrade: dist
       update_cache: yes
+    changed_when: false
     when: ansible_distribution == "Ubuntu"
 
-  - name: install updates for Rocky servers
+  - name: updates repo cache Rocky servers
     tags: always  
     dnf:
-      update_only: yes
       update_cache: yes
+    changed_when: false
     when: ansible_distribution == "Rocky"
-      
+
+
+- hosts: all
+  become: true
+  tasks:
+#a place holder for doing ssh key management.     
+  - name: add ssh key for new user
+    tags: always
+    authorized_key:
+      user: simone
+      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGrbYppJ9pW6hYN6w9fJ4bC+0A5im66k00a4cth53BqB ansible"
+
+
 - hosts: web_servers
   become: true
   tasks:
