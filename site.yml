@@ -40,6 +40,14 @@
       state: latest
     when: ansible_distribution == "Rocky"
 
+  - name: start httpd (Rocky)
+    tags: apache,rocky,apache2
+    service: 
+      name: httpd
+      state: started
+      enabled: yes
+    when: ansible_distribution == "Rocky" 
+
   - name: copy default html file for site
     tags: apache,apache2,httpd
     copy:
@@ -82,14 +90,17 @@
   tasks: 
 
   - name: install unzip
+    tags: workstations
     package:
-    name: unzip
+      name: unzip
       
   - name: Install Terraform
+    tags: workstations
     unarchive: 
       src: https://releases.hashicorp.com/terraform/1.5.3/terraform_1.5.3_linux_amd64.zip
       dest: /usr/local/bin
-      owner: gbalusek
-      group: gbalusek
+      remote_src: yes
+      owner: root
+      group: root
       mode: 0755
 
