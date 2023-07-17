@@ -1,0 +1,11 @@
+# Another way to try to add a ssh key without putting the public key information into the yml file.
+#- name: Set authorized key taken from file
+#  ansible.posix.authorized_key:
+#    user: simon
+#    state: present
+#    key: "{{ lookup('file', '~/.ssh/ansible.pub') }}"
+
+ - name: add ssh key for simone
+   authorized_key:
+     user: simone
+     key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGrbYppJ9pW6hYN6w9fJ4bC+0A5im66k00a4cth53BqB ansible"
