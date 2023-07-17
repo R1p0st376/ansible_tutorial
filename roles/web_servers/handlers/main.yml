@@ -1,0 +1,7 @@
+# Create task name that matches the notify from the roles/web_server/tasks/main.yml 
+# 
+
+- name: restart_apache
+  service:
+    name: "{{ apache_service }}"
+    state: restarted
